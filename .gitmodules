@@ -38,3 +38,15 @@
 	path = repos/youtube-agent-skill
 	url = https://github.com/Jakeschincariol/youtube-agent-skill.git
 	shallow = true
+[submodule "repos/paper-reel"]
+	path = repos/paper-reel
+	url = https://github.com/haiderfarooq3/paper-reel.git
+	shallow = true
+[submodule "repos/explainroo"]
+	path = repos/explainroo
+	url = https://github.com/vincentsch/explainroo.git
+	shallow = true
+[submodule "repos/remotion-skills"]
+	path = repos/remotion-skills
+	url = https://github.com/remotion-dev/skills.git
+	shallow = true

@@ -27,6 +27,9 @@ tests/                 unit tests (python3 -m unittest discover -s tests)
 | researcher-agents | public | AU celebrity news -> articles -> WordPress | news-content-liaison |
 | clips-studio | public | clips from long video (fork of ColinGPT9/clips-studio) | video-liaison |
 | reel-studio-kit | vendored | faceless reels from a topic (Remotion) | video-liaison |
+| explainroo | public, third party | free narrated explainer videos (verified end to end here) | video-liaison |
+| paper-reel | public, third party | cut-paper reels; macOS-oriented, not working on Linux yet | video-liaison |
+| remotion-skills | public, third party | Remotion's official agent skills | video-liaison |
 | pin-creator | public | product URL -> Pinterest pin | pinterest-liaison |
 | instagram-agent-skill | public, third party | 13 Instagram skills | social-liaison |
 | youtube-agent-skill | public, third party | 11 YouTube skills | social-liaison |
@@ -67,5 +70,6 @@ Then in Claude Code: `/master <task>`.
 - pin-creator: auto-post allowed, or approval each time?
 - Reel kit voice is free: Piper (local TTS) + local Whisper captions, no API keys. Piper's `en_US-lessac-medium` is a clear but plain voice; other voices can be added with `npm run setup:voice -- <voice>`.
 - Reel kit: Remotion's licence is paid for larger companies; confirm your size.
+- Video skills linked from submodules into `.claude/skills/` (symlinks, run `scripts/install-skills.sh` after cloning): `explainroo`, `paper-reel`, `remotion-best-practices`.
 - Skills: the 13 `ig-*` and 11 `yt-*` skills are installed project-local in `.claude/skills/` (copies of the pinned submodules; refresh with `scripts/install-skills.sh` after moving a pin). Each reads a voice profile you still need to create: `~/.claude/instagram/voice.md` and `~/.claude/youtube/voice.md` (templates in each repo's `templates/voice.md`).
 - The reel kit's own skill (`reels`) loads when Claude runs inside `vendor/reel-studio-kit`; it needs `npm install` there first.

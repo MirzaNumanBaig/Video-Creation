@@ -580,10 +580,130 @@
       "visibility": "public",
       "status": "reference",
       "agent": null,
-      "summary": "Third-party curated list of 564 video-skill repos with its own end-to-end test (16 skills, all passed 4 checks). Catalogue only; ratings are the maintainer's. Not cloned. Notable: explainroo, onetake, remotion-dev/skills, stickman-video-director, claude-faceless-shorts-creator.",
+      "summary": "Third-party curated list of 564 video-skill repos with its own end-to-end test (16 skills, all passed 4 checks). Catalogue only; ratings are the maintainer's. Not cloned. Notable: explainroo, onetake, remotion-dev/skills, stickman-video-director, claude-faceless-shorts-creator. Installed from it on 2026-11-27: explainroo, paper-reel, remotion-skills.",
       "keywords": [
         "video skills catalogue",
         "find a skill"
+      ]
+    },
+    "explainroo": {
+      "path": "repos/explainroo",
+      "url": "https://github.com/vincentsch/explainroo",
+      "visibility": "public",
+      "status": "active",
+      "agent": "video-liaison",
+      "summary": "Free open-source explainer-video studio for coding agents (MIT, v0.6.2): you write script.md + scenes.js, it renders an MP4 with a local Kokoro voice, word timing and camera moves. Linux supported. Optional paid outside services exist (AI clips, presenters, Blotato posting): do not use.",
+      "stack": [
+        "node",
+        "ffmpeg",
+        "kokoro (local tts)",
+        "canvas"
+      ],
+      "entrypoints": [
+        "skills/explainroo/SKILL.md",
+        "AGENTS.md",
+        "bin/explainroo.js"
+      ],
+      "commands": {
+        "docs": "node bin/explainroo.js docs",
+        "doctor": "node bin/explainroo.js doctor"
+      },
+      "keywords": [
+        "explainer",
+        "how-to video",
+        "walkthrough",
+        "explainroo",
+        "narrated video",
+        "screen recording",
+        "landscape video"
+      ],
+      "produces": [
+        "explainer MP4 with voice-over"
+      ],
+      "consumes": [
+        "topic",
+        "script.md",
+        "scenes.js"
+      ],
+      "rules": [
+        "No paid services or keys (owner decision 2026-11-27): never enable its outside AI-clip, presenter or posting integrations",
+        "Posting is the owner's action",
+        "Skill says: run via npx --yes explainroo, or node bin/explainroo.js in a source checkout"
+      ]
+    },
+    "paper-reel": {
+      "path": "repos/paper-reel",
+      "url": "https://github.com/haiderfarooq3/paper-reel",
+      "visibility": "public",
+      "status": "active",
+      "agent": "video-liaison",
+      "summary": "Faceless 9:16 cut-paper explainer reels drawn in code (MIT): Kokoro voice, whisper.cpp word timing, canvas + Playwright + ffmpeg, no API keys. macOS-oriented (brew, macOS system fonts): [CONFIRM] works on Linux.",
+      "stack": [
+        "node",
+        "playwright",
+        "ffmpeg",
+        "kokoro-onnx",
+        "whisper.cpp"
+      ],
+      "entrypoints": [
+        "SKILL.md",
+        "bin/reel",
+        "templates/starter",
+        "examples/khan-skill"
+      ],
+      "commands": {
+        "doctor": "bin/reel doctor",
+        "new": "bin/reel new <dir>",
+        "voice": "bin/reel voice <dir>",
+        "check": "bin/reel check <dir>",
+        "export": "bin/reel export <dir> out.mp4"
+      },
+      "keywords": [
+        "paper reel",
+        "cut paper",
+        "faceless reel",
+        "mascot reel",
+        "explainer reel",
+        "skill spotlight"
+      ],
+      "produces": [
+        "1080x1920 mp4 reels"
+      ],
+      "consumes": [
+        "topic + CTA keyword"
+      ],
+      "rules": [
+        "Script approval before drawing",
+        "Every factual claim checked against a primary source",
+        "Reels 18-25 s"
+      ]
+    },
+    "remotion-skills": {
+      "path": "repos/remotion-skills",
+      "url": "https://github.com/remotion-dev/skills",
+      "visibility": "public",
+      "status": "active",
+      "agent": "video-liaison",
+      "summary": "Remotion's official agent skills (best practices, captions, render, docs, licence...). Guidance for working in Remotion projects such as vendor/reel-studio-kit. Remotion has its own licence: paid for larger companies.",
+      "stack": [
+        "markdown skills"
+      ],
+      "entrypoints": [
+        "skills/remotion-best-practices/SKILL.md"
+      ],
+      "commands": {},
+      "keywords": [
+        "remotion",
+        "remotion best practices",
+        "remotion captions",
+        "remotion render"
+      ],
+      "produces": [
+        "guidance only"
+      ],
+      "consumes": [],
+      "rules": [
+        "Use when editing vendor/reel-studio-kit"
       ]
     }
   },
