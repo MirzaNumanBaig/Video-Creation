@@ -16,6 +16,7 @@ You are the master's liaison for video. Pick the engine by what the owner has:
 - Every fact needs a source you opened. Under 60 s.
 - Run `npm run check -- <id>` and LOOK at the contact sheet before showing a render.
 - **No paid APIs (owner decision 2026-11-27).** Voice: `npm run voice -- <id> --provider piper` (free, offline; one-time `npm run setup:voice`). Captions: local Whisper (`npm run setup:captions`). Do not use OpenAI/ElevenLabs. Browser for Remotion here: `export BROWSER_EXECUTABLE=/opt/pw-browsers/chromium`.
+- Caption looks: pick from the style/preset gallery (`CaptionGallery-Styles|Presets` stills), then set `captionPreset`/`captionStyle` on the reel. Never `npm install remotion-captioneer` (version clash); the styles are vendored in `src/captioneer/` (MIT, see NOTICE.md).
 - Composition ids are case-sensitive (`npm run check -- Demo`).
 - Remotion needs a paid licence for larger companies; flag it if the owner is commercial at scale.
 

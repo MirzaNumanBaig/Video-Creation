@@ -1,0 +1,204 @@
+/**
+ * AnimatedCaptions — The main component
+ * Renders captions in the selected style
+ */
+
+import React from "react";
+import { AbsoluteFill, useCurrentFrame, useVideoConfig } from "remotion";
+import type { CaptionComponentProps, CaptionStyle, CaptionSegment } from "../types";
+import { formatSpeakerLabel, speakerColorIndex } from "../providers/diarization";
+import { WordHighlight } from "./WordHighlight";
+import { Karaoke } from "./Karaoke";
+import { Typewriter } from "./Typewriter";
+import { Bounce } from "./Bounce";
+import { Wave } from "./Wave";
+import { Glow } from "./Glow";
+import { TypewriterErase } from "./TypewriterErase";
+import { Pill } from "./Pill";
+import { Flicker } from "./Flicker";
+import { Highlighter } from "./Highlighter";
+import { Blur } from "./Blur";
+import { Rainbow } from "./Rainbow";
+import { Scale } from "./Scale";
+import { Spotlight } from "./Spotlight";
+import { Custom } from "./Custom";
+
+const styleMap: Record<CaptionStyle, React.FC<CaptionComponentProps>> = {
+  "word-highlight": WordHighlight,
+  karaoke: Karaoke,
+  typewriter: Typewriter,
+  bounce: Bounce,
+  wave: Wave,
+  glow: Glow,
+  "typewriter-erase": TypewriterErase,
+  pill: Pill,
+  flicker: Flicker,
+  highlighter: Highlighter,
+  blur: Blur,
+  rainbow: Rainbow,
+  scale: Scale,
+  spotlight: Spotlight,
+};
+
+const sharedStyleProps = (
+  props: CaptionComponentProps
+): Pick<
+  CaptionComponentProps,
+  | "captions"
+  | "fontFamily"
+  | "fontSize"
+  | "fontColor"
+  | "highlightColor"
+  | "position"
+  | "maxWidth"
+  | "wordsPerLine"
+  | "useSmartWrap"
+  | "emphasisStyle"
+  | "emphasisColor"
+> => ({
+  captions: props.captions,
+  fontFamily: props.fontFamily,
+  fontSize: props.fontSize,
+  fontColor: props.fontColor,
+  highlightColor: props.highlightColor,
+  position: props.position,
+  maxWidth: props.maxWidth,
+  wordsPerLine: props.wordsPerLine,
+  useSmartWrap: props.useSmartWrap,
+  emphasisStyle: props.emphasisStyle,
+  emphasisColor: props.emphasisColor,
+});
+
+const DEFAULT_SPEAKER_COLORS = [
+  "#3b82f6",
+  "#f59e0b",
+  "#22c55e",
+  "#f472b6",
+  "#a78bfa",
+  "#34d399",
+];
+
+function activeSegment(
+  segments: CaptionSegment[],
+  timeMs: number
+): CaptionSegment | undefined {
+  return segments.find((s) => timeMs >= s.startMs && timeMs < s.endMs);
+}
+
+const SpeakerLabel: React.FC<{
+  readonly segment: CaptionSegment;
+  readonly colors: string[];
+}> = ({ segment, colors }) => {
+  if (!segment.speaker) return null;
+  const idx = speakerColorIndex(segment.speaker, colors.length);
+  const color = colors[idx] ?? colors[0];
+  return (
+    <div
+      style={{
+        position: "absolute",
+        top: 24,
+        left: 24,
+        padding: "6px 12px",
+        borderRadius: 8,
+        fontFamily: "ui-sans-serif, system-ui, sans-serif",
+        fontSize: 14,
+        fontWeight: 500,
+        color: "#fff",
+        backgroundColor: color,
+        opacity: 0.9,
+        zIndex: 10,
+      }}
+    >
+      {formatSpeakerLabel(segment.speaker)}
+    </div>
+  );
+};
+
+export const AnimatedCaptions: React.FC<CaptionComponentProps> = (props) => {
+  const {
+    style = "word-highlight",
+    highlightColor,
+    backgroundColor,
+    textDirection,
+    showSpeakerLabels = false,
+    speakerColors = DEFAULT_SPEAKER_COLORS,
+    speakerHighlight = false,
+    captions,
+  } = props;
+
+  const frame = useCurrentFrame();
+  const { fps } = useVideoConfig();
+  const timeMs = (frame / fps) * 1000;
+  const speakerSeg =
+    showSpeakerLabels || speakerHighlight
+      ? activeSegment(captions.segments, timeMs)
+      : undefined;
+  const currentSeg = showSpeakerLabels ? speakerSeg : undefined;
+
+  // Recolor the animation to the active speaker so multi-speaker clips read
+  // like pro captions (each voice pops in its own color).
+  const effectiveHighlight =
+    speakerHighlight && speakerSeg?.speaker
+      ? speakerColors[
+          speakerColorIndex(speakerSeg.speaker, speakerColors.length)
+        ] ?? speakerColors[0]
+      : highlightColor;
+
+  const dirStyle: React.CSSProperties | undefined =
+    textDirection && textDirection !== "auto"
+      ? { direction: textDirection }
+      : undefined;
+
+  const fillStyle: React.CSSProperties = {
+    ...dirStyle,
+    ...(backgroundColor ? { backgroundColor } : {}),
+  };
+
+  const childProps = {
+    ...sharedStyleProps(props),
+    captions,
+    highlightColor: effectiveHighlight,
+    waveColor: effectiveHighlight,
+    glowColor: effectiveHighlight,
+    pillColor: effectiveHighlight,
+    flickerColor: effectiveHighlight,
+    focusColor: effectiveHighlight,
+    scaleColor: effectiveHighlight,
+    spotlightColor: effectiveHighlight,
+    fillColor: effectiveHighlight,
+    bounceColor: effectiveHighlight,
+    cursorColor: effectiveHighlight,
+    eraseColor: "#FF4444",
+  };
+
+  // A custom keyframe animation (from a marketplace package or inline)
+  // overrides the named style entirely.
+  if (props.animation) {
+    return (
+      <AbsoluteFill style={fillStyle}>
+        {currentSeg && <SpeakerLabel segment={currentSeg} colors={speakerColors} />}
+        <Custom {...childProps} animation={props.animation} />
+      </AbsoluteFill>
+    );
+  }
+
+  const Component = styleMap[style];
+
+  if (!Component) {
+    console.warn(
+      `Unknown caption style: "${style}". Falling back to "word-highlight".`
+    );
+    return (
+      <AbsoluteFill style={fillStyle}>
+        <WordHighlight {...childProps} />
+      </AbsoluteFill>
+    );
+  }
+
+  return (
+    <AbsoluteFill style={fillStyle}>
+      {currentSeg && <SpeakerLabel segment={currentSeg} colors={speakerColors} />}
+      <Component {...childProps} />
+    </AbsoluteFill>
+  );
+};

@@ -24,6 +24,8 @@ export const REELS: ReelEntry[] = [
       { suffix: "Pixel", props: { avatar: "pixel" } },
       { suffix: "BoldDark", props: { brand: PRESETS.boldDark } },
       { suffix: "SoftPastel", props: { brand: PRESETS.softPastel } },
+      { suffix: "Cap-TikTok", props: { captionPreset: "tiktok" } },
+      { suffix: "Cap-Bounce", props: { captionStyle: "bounce" } },
     ],
   },
   // <new-reel-entries>

@@ -15,6 +15,10 @@ export type ReelProps = {
   debugSafeZones?: boolean;
   /** Log layout measurements for `npm run check`. */
   probe?: boolean;
+  /** Use the animated caption library instead of the plain karaoke captions. One of 23 preset names, e.g. "tiktok", "cinematic-gold" (see src/captioneer/presets). */
+  captionPreset?: string;
+  /** Or a single style: word-highlight, karaoke, typewriter, bounce, wave, glow, typewriter-erase, pill, flicker, highlighter, blur, rainbow, scale, spotlight. */
+  captionStyle?: import("../captioneer/types").CaptionStyle;
 };
 
 const Inner: React.FC<{ audio?: string; debugSafeZones?: boolean; probe?: boolean; children: React.ReactNode }> = ({ audio, debugSafeZones, probe, children }) => {

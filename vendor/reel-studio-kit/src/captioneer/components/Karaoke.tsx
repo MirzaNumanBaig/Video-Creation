@@ -1,0 +1,147 @@
+/**
+ * Karaoke Style
+ * Words fill with color progressively left-to-right as they're spoken
+ */
+
+import React from "react";
+import { AbsoluteFill, useCurrentFrame, useVideoConfig } from "remotion";
+import { captionBoxMaxWidth, type CaptionStyleLayoutProps } from "./style-props";
+import { emphasisVisual, type EmphasisStyleProps } from "./emphasis";
+import type { CaptionData, Word } from "../types";
+import { getActiveSegment, getActiveWordIndex, getWordProgress } from "../utils";
+
+interface KaraokeProps extends CaptionStyleLayoutProps {
+  readonly captions: CaptionData;
+  readonly fontFamily?: string;
+  readonly fontSize?: number;
+  readonly fillColor?: string;
+  readonly baseColor?: string;
+  readonly position?: "top" | "center" | "bottom";
+  readonly emphasisStyle?: "scale" | "color" | "glow";
+  readonly emphasisColor?: string;
+}
+
+const KaraokeWord: React.FC<{
+  readonly word: Word;
+  readonly isActive: boolean;
+  readonly progress: number;
+  readonly fontFamily: string;
+  readonly fontSize: number;
+  readonly fillColor: string;
+  readonly baseColor: string;
+  readonly emphasis: EmphasisStyleProps;
+}> = ({ word, isActive, progress, fontFamily, fontSize, fillColor, baseColor, emphasis }) => {
+  const emph = emphasisVisual(word, emphasis);
+  const emphFontSize = emph.fontBoost
+    ? Math.round(fontSize * emph.fontBoost)
+    : fontSize;
+
+  if (!isActive) {
+    const isPast = progress >= 1;
+    return (
+      <span
+        style={{
+          fontFamily,
+          fontSize: emphFontSize,
+          fontWeight: 700,
+          color: emph.color ?? (isPast ? fillColor : baseColor),
+          display: "inline-block",
+          textShadow: emph.textShadow ?? "0 2px 8px rgba(0,0,0,0.5)",
+        }}
+      >
+        {word.word}
+      </span>
+    );
+  }
+
+  const fillPercent = Math.round(progress * 100);
+  const emphFill = emph.color ?? fillColor;
+
+  return (
+    <span
+      style={{
+        fontFamily,
+        fontSize: emphFontSize,
+        fontWeight: 700,
+        display: "inline-block",
+        background: `linear-gradient(90deg, ${emphFill} ${fillPercent}%, ${baseColor} ${fillPercent}%)`,
+        WebkitBackgroundClip: "text",
+        WebkitTextFillColor: "transparent",
+        textShadow: "none",
+        filter: emph.textShadow
+          ? `drop-shadow(0 0 12px ${emphFill})`
+          : `drop-shadow(0 0 8px ${emphFill}60)`,
+      }}
+    >
+      {word.word}
+    </span>
+  );
+};
+
+export const Karaoke: React.FC<KaraokeProps> = ({
+  captions,
+  fontFamily = "Inter, sans-serif",
+  fontSize = 56,
+  fillColor = "#FF6B6B",
+  baseColor = "rgba(255,255,255,0.4)",
+  position = "bottom",
+  maxWidth,
+  emphasisStyle,
+  emphasisColor,
+}) => {
+  const frame = useCurrentFrame();
+  const { fps } = useVideoConfig();
+  const currentTimeMs = (frame / fps) * 1000;
+
+  const segment = getActiveSegment(captions, currentTimeMs);
+  if (!segment) return null;
+
+  const activeIndex = getActiveWordIndex(segment, currentTimeMs);
+
+  const positionStyle: React.CSSProperties = {
+    top: position === "top" ? "10%" : position === "center" ? "50%" : undefined,
+    bottom: position === "bottom" ? "10%" : undefined,
+    transform: position === "center" ? "translateY(-50%)" : undefined,
+  };
+
+  return (
+    <AbsoluteFill
+      style={{
+        justifyContent: "center",
+        alignItems: "center",
+        ...positionStyle,
+      }}
+    >
+      <div
+        style={{
+          display: "flex",
+          flexWrap: "wrap",
+          justifyContent: "center",
+          alignItems: "baseline",
+          gap: "8px 12px",
+          maxWidth: captionBoxMaxWidth(maxWidth),
+          padding: "16px 24px",
+        }}
+      >
+        {segment.words.map((word, i) => {
+          const progress =
+            i < activeIndex ? 1 : i === activeIndex ? getWordProgress(word, currentTimeMs) : 0;
+
+          return (
+            <KaraokeWord
+              key={`${word.startMs}-${i}`}
+              word={word}
+              isActive={i === activeIndex}
+              progress={progress}
+              fontFamily={fontFamily}
+              fontSize={fontSize}
+              fillColor={fillColor}
+              baseColor={baseColor}
+              emphasis={{ emphasisStyle, emphasisColor, highlightColor: fillColor }}
+            />
+          );
+        })}
+      </div>
+    </AbsoluteFill>
+  );
+};

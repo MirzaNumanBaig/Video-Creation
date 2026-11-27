@@ -416,7 +416,7 @@
       "visibility": "vendored",
       "status": "vendored",
       "agent": "video-liaison",
-      "summary": "Remotion reel studio (MIT, from @techstackbro): one line in, script (approval gate), voice, Whisper-synced captions, scenes, render, frame self-check, caption+hashtags. Faceless/animated reels with no footage. Copied in as plain files (no upstream git).",
+      "summary": "Remotion reel studio (MIT, from @techstackbro): one line in, script (approval gate), voice, Whisper-synced captions, scenes, render, frame self-check, caption+hashtags. Faceless/animated reels with no footage. Copied in as plain files (no upstream git). Includes 14 caption styles / 23 presets vendored from remotion-captioneer (MIT) under src/captioneer.",
       "stack": [
         "node",
         "remotion",
@@ -440,7 +440,8 @@
         "check": "npm run check -- <id>",
         "render": "npm run render -- <id>",
         "setup-voice": "npm run setup:voice   (free local Piper voice, once)",
-        "setup-captions": "npm run setup:captions   (free local Whisper, once)"
+        "setup-captions": "npm run setup:captions   (free local Whisper, once)",
+        "caption-gallery": "npx remotion still CaptionGallery-Styles out/styles.png --frame=36  (also CaptionGallery-Presets)"
       },
       "keywords": [
         "reel",
@@ -471,7 +472,8 @@
         "Keys only from env/.env, never in files",
         "Remotion licence: paid for larger companies [CONFIRM size]",
         "Owner decision 2026-11-27: no paid APIs. Use --provider piper (or own recording); never OpenAI/ElevenLabs unless the owner reverses this",
-        "Composition IDs are case-sensitive (npm run check -- Demo)"
+        "Composition IDs are case-sensitive (npm run check -- Demo)",
+        "Captions: use <StyledCaptions preset|style> (captionPreset/captionStyle props). Do not npm-install remotion-captioneer: it pins remotion 4.0.438 + React 18 and conflicts with the kit"
       ]
     },
     "instagram-agent-skill": {

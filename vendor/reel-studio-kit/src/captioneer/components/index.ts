@@ -1,0 +1,16 @@
+export { WordHighlight } from "./WordHighlight";
+export { Karaoke } from "./Karaoke";
+export { Typewriter } from "./Typewriter";
+export { Bounce } from "./Bounce";
+export { Wave } from "./Wave";
+export { Glow } from "./Glow";
+export { TypewriterErase } from "./TypewriterErase";
+export { Pill } from "./Pill";
+export { Flicker } from "./Flicker";
+export { Highlighter } from "./Highlighter";
+export { Blur } from "./Blur";
+export { Rainbow } from "./Rainbow";
+export { Scale } from "./Scale";
+export { Spotlight } from "./Spotlight";
+export { Custom } from "./Custom";
+export { AnimatedCaptions } from "./AnimatedCaptions";

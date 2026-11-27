@@ -3,6 +3,8 @@ import { Composition, Folder } from "remotion";
 import { FPS, HEIGHT, WIDTH } from "./layout";
 import { PlaceholderSheet } from "./dev/PlaceholderSheet";
 import { REELS } from "./reels/registry";
+import { CaptionGallery, GALLERY_W, STYLES, galleryHeight } from "./dev/CaptionGallery";
+import { presets } from "./captioneer/presets";
 
 export const Root: React.FC = () => (
   <>
@@ -30,6 +32,8 @@ export const Root: React.FC = () => (
     <Folder name="Dev">
       <Composition id="PlaceholderSheet-Illustrated" component={PlaceholderSheet} width={2000} height={1600} fps={1} durationInFrames={1} defaultProps={{ look: "illustrated" as const }} />
       <Composition id="PlaceholderSheet-Pixel" component={PlaceholderSheet} width={2000} height={1600} fps={1} durationInFrames={1} defaultProps={{ look: "pixel" as const }} />
+      <Composition id="CaptionGallery-Styles" component={CaptionGallery} width={GALLERY_W} height={galleryHeight(STYLES.length)} fps={30} durationInFrames={120} defaultProps={{ mode: "styles" as const }} />
+      <Composition id="CaptionGallery-Presets" component={CaptionGallery} width={GALLERY_W} height={galleryHeight(Object.keys(presets).length)} fps={30} durationInFrames={120} defaultProps={{ mode: "presets" as const }} />
     </Folder>
   </>
 );

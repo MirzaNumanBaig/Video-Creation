@@ -121,6 +121,18 @@ npm run demo
 
 It prints how many words matched. Under 70 percent usually means `captions.txt` does not match what was spoken. Built on the free caption-sync-kit code (MIT, same author).
 
+## Caption styles (14 styles, 23 presets, free)
+
+Besides the plain karaoke captions, any reel can use animated caption styles from **remotion-captioneer** (MIT, copied into `src/captioneer/`, see `NOTICE.md`; no API keys, no network).
+
+```bash
+npx remotion still CaptionGallery-Styles  out/styles.png  --frame=36   # all 14 styles on one sheet
+npx remotion still CaptionGallery-Presets out/presets.png --frame=36   # all 23 presets
+npx remotion render Demo-Cap-TikTok out/demo.mp4                       # try one on the demo
+```
+
+In a reel: `<StyledCaptions words={words} preset="tiktok" />` or `style="bounce"`, or set `captionPreset` / `captionStyle` on the reel's props (the demo and the template already do). Styles: word-highlight, karaoke, typewriter, bounce, wave, glow, typewriter-erase, pill, flicker, highlighter, blur, rainbow, scale, spotlight. Presets include tiktok, instagram-reels, youtube-shorts, podcast-clean, cinematic-gold, music-karaoke, tutorial-typewriter, minimal-white, gaming-neon, news-ticker, documentary, education-highlighter, fun-rainbow, retro-flicker and more. The captions sit on the bottom edge of the Instagram safe zone and get a dark outline so white text reads on light backgrounds. `npm run check` does not measure these captions, so look at the contact sheet.
+
 ## Change the brand and style
 
 Open `src/brand.ts`:

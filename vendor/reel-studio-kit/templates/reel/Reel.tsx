@@ -6,7 +6,7 @@ import { brand as myBrand } from "../../brand";
 import { Avatar } from "../../avatars/Avatar";
 import { useMouth } from "../../avatars/useMouth";
 import type { PoseCue } from "../../avatars/SpritePlayer";
-import { Card, EndCard, Karaoke, Line, ReelFrame, SceneBlock, Title, type ReelProps } from "../../components";
+import { Card, EndCard, Karaoke, Line, ReelFrame, SceneBlock, StyledCaptions, Title, type ReelProps } from "../../components";
 import { AVATAR_BOX, CAPTION_BOTTOM, SAFE, SAFE_BOX } from "../../layout";
 import { timing } from "../../timing";
 import mouth from "../../../public/reels/__ID__/mouth.json";
@@ -26,7 +26,7 @@ const S = {
 // Sprite avatars only: "from this second, show this pose" (ignored by the flat mascot).
 const poseCues: PoseCue[] = [{ at: 0, pose: "idle" }];
 
-export const Reel: React.FC<ReelProps> = ({ brand = myBrand, avatar = "flat", debugSafeZones, probe }) => {
+export const Reel: React.FC<ReelProps> = ({ brand = myBrand, avatar = "flat", debugSafeZones, probe, captionPreset, captionStyle }) => {
   const m = useMouth(mouth, words);
   return (
     <ReelFrame brand={brand} audio={AUDIO} debugSafeZones={debugSafeZones} probe={probe}>
@@ -56,9 +56,13 @@ export const Reel: React.FC<ReelProps> = ({ brand = myBrand, avatar = "flat", de
           <Avatar style={avatar} mouth={m} cues={poseCues} size={AVATAR_BOX.size} />
         </div>
       ) : null}
-      <div style={{ position: "absolute", left: SAFE_BOX.x, width: SAFE_BOX.width, bottom: CAPTION_BOTTOM }}>
-        <Karaoke words={words} perChunk={4} keywords={[]} />
-      </div>
+      {captionPreset || captionStyle ? (
+        <StyledCaptions words={words} preset={captionPreset} style={captionStyle} />
+      ) : (
+        <div style={{ position: "absolute", left: SAFE_BOX.x, width: SAFE_BOX.width, bottom: CAPTION_BOTTOM }}>
+          <Karaoke words={words} perChunk={4} keywords={[]} />
+        </div>
+      )}
     </ReelFrame>
   );
 };
