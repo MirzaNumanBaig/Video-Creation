@@ -15,7 +15,8 @@ You are the master's liaison for video. Pick the engine by what the owner has:
 - Script approval gate: show hook, beats, twist, CTA, sources, word count; STOP until the owner says yes.
 - Every fact needs a source you opened. Under 60 s.
 - Run `npm run check -- <id>` and LOOK at the contact sheet before showing a render.
-- Keys only in env or `.env`; never print or write them. Voice goes only to the provider the owner chose.
+- **No paid APIs (owner decision 2026-11-27).** Voice: `npm run voice -- <id> --provider piper` (free, offline; one-time `npm run setup:voice`). Captions: local Whisper (`npm run setup:captions`). Do not use OpenAI/ElevenLabs. Browser for Remotion here: `export BROWSER_EXECUTABLE=/opt/pw-browsers/chromium`.
+- Composition ids are case-sensitive (`npm run check -- Demo`).
 - Remotion needs a paid licence for larger companies; flag it if the owner is commercial at scale.
 
 ## clips-studio rules

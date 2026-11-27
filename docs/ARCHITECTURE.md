@@ -65,6 +65,7 @@ Then in Claude Code: `/master <task>`.
 ## Open items for the owner
 - Empty repos (Modus-Carry, Sell-Birds-Runner, SEO-Audit-Tool) and ai-agents: purpose?
 - pin-creator: auto-post allowed, or approval each time?
+- Reel kit voice is free: Piper (local TTS) + local Whisper captions, no API keys. Piper's `en_US-lessac-medium` is a clear but plain voice; other voices can be added with `npm run setup:voice -- <voice>`.
 - Reel kit: Remotion's licence is paid for larger companies; confirm your size.
 - Skills: the 13 `ig-*` and 11 `yt-*` skills are installed project-local in `.claude/skills/` (copies of the pinned submodules; refresh with `scripts/install-skills.sh` after moving a pin). Each reads a voice profile you still need to create: `~/.claude/instagram/voice.md` and `~/.claude/youtube/voice.md` (templates in each repo's `templates/voice.md`).
 - The reel kit's own skill (`reels`) loads when Claude runs inside `vendor/reel-studio-kit`; it needs `npm install` there first.

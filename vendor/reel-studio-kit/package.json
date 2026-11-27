@@ -14,6 +14,7 @@
     "check": "node tools/check.mjs",
     "render": "node tools/render.mjs",
     "setup:captions": "bash tools/setup-captions.sh",
+    "setup:voice": "bash tools/setup-voice.sh",
     "demo:assets": "node tools/demo/make-demo.mjs",
     "demo": "node tools/render.mjs Demo",
     "sprites:placeholders": "node tools/make-placeholder-sprites.mjs"

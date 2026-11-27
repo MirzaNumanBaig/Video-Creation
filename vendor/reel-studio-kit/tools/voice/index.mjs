@@ -1,6 +1,7 @@
 // Voice step. Usage:
 //   npm run voice -- <reel-id> --provider openai       [--voice cedar] [--model gpt-4o-mini-tts|gpt-audio] [--style "warm, fast, energetic"]
 //   npm run voice -- <reel-id> --provider elevenlabs   [--voice <voice id>] [--model eleven_multilingual_v2]
+//   npm run voice -- <reel-id> --provider piper        [--voice en_US-lessac-medium]   (free, offline, no key; run npm run setup:voice once)
 //   npm run voice -- <reel-id> --provider own          [--file ~/Downloads/my-recording.m4a]
 // Reads  projects/<id>/voice.txt  (exactly what should be spoken)
 // Writes public/reels/<id>/vo.wav
@@ -14,8 +15,8 @@ const args = process.argv.slice(2);
 const id = args.find((a) => !a.startsWith("--"));
 const opt = (n, d) => { const i = args.indexOf(`--${n}`); return i >= 0 ? args[i + 1] : d; };
 const provider = opt("provider", "");
-if (!id || !["openai", "elevenlabs", "own"].includes(provider)) {
-  console.error("Usage: npm run voice -- <reel-id> --provider openai|elevenlabs|own  (see README)");
+if (!id || !["openai", "elevenlabs", "piper", "own"].includes(provider)) {
+  console.error("Usage: npm run voice -- <reel-id> --provider openai|elevenlabs|piper|own  (see README)");
   process.exit(1);
 }
 const outDir = path.join(root, "public/reels", id);
@@ -45,6 +46,20 @@ if (provider === "own") {
 }
 
 if (!text) { console.error(`${textFile} is empty or missing. Write the spoken text there first.`); process.exit(1); }
+
+if (provider === "piper") {
+  // Free local TTS (Piper). Setup: npm run setup:voice  (venv in .venv-tts, voices in .voices/)
+  const voice = opt("voice", "en_US-lessac-medium");
+  const py = path.join(root, ".venv-tts/bin/python");
+  const model = path.join(root, ".voices", `${voice}.onnx`);
+  if (!fs.existsSync(py) || !fs.existsSync(model)) { console.error(`Piper not set up for voice "${voice}". Run: npm run setup:voice${voice === "en_US-lessac-medium" ? "" : " -- " + voice}`); process.exit(1); }
+  const tmp = path.join(outDir, "_raw.wav");
+  const r = spawnSync(py, ["-m", "piper", "-m", model, "-c", model + ".json", "-i", textFile, "-f", tmp, "--length-scale", opt("speed", "1.0")], { encoding: "utf8" });
+  if (r.status !== 0 || !fs.existsSync(tmp)) { console.error("Piper failed:", r.stderr); process.exit(1); }
+  toWav(tmp, out, ["-af", "loudnorm=I=-16:TP=-1.5:LRA=11"]);
+  fs.rmSync(tmp);
+  done();
+}
 
 if (provider === "openai") {
   const { requireKey } = await import("../env.mjs");

@@ -435,10 +435,12 @@
         "install": "npm install",
         "demo": "npm run demo",
         "new": "npm run new -- <id>",
-        "voice": "npm run voice -- <id> --provider openai|elevenlabs|own",
+        "voice": "npm run voice -- <id> --provider piper   (free default) | openai | elevenlabs | own",
         "sync": "npm run sync -- <id> --lang en",
         "check": "npm run check -- <id>",
-        "render": "npm run render -- <id>"
+        "render": "npm run render -- <id>",
+        "setup-voice": "npm run setup:voice   (free local Piper voice, once)",
+        "setup-captions": "npm run setup:captions   (free local Whisper, once)"
       },
       "keywords": [
         "reel",
@@ -459,14 +461,17 @@
       ],
       "consumes": [
         "topic line",
-        "OPENAI_API_KEY or ELEVENLABS_API_KEY (env/.env only)"
+        "free: Piper voice + Whisper captions (local, no key)",
+        "optional paid: OPENAI_API_KEY or ELEVENLABS_API_KEY (env/.env only)"
       ],
       "rules": [
         "Script approval gate: never skip",
         "Facts need sources the agent actually opened",
         "Run npm run check and LOOK at the contact sheet before showing a render",
         "Keys only from env/.env, never in files",
-        "Remotion licence: paid for larger companies [CONFIRM size]"
+        "Remotion licence: paid for larger companies [CONFIRM size]",
+        "Owner decision 2026-11-27: no paid APIs. Use --provider piper (or own recording); never OpenAI/ElevenLabs unless the owner reverses this",
+        "Composition IDs are case-sensitive (npm run check -- Demo)"
       ]
     },
     "instagram-agent-skill": {

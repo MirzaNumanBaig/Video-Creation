@@ -7,3 +7,5 @@ tools/.venv
 __pycache__
 *.zip
 .git
+.venv-tts/
+.voices/

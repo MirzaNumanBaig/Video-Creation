@@ -1,207 +1,207 @@
 [
   {
     "word": "Your",
-    "start": 0.25,
-    "end": 0.498
+    "start": 0.0,
+    "end": 0.16
   },
   {
     "word": "reel",
-    "start": 0.528,
-    "end": 0.776
+    "start": 0.16,
+    "end": 0.4
   },
   {
     "word": "dies",
-    "start": 0.806,
-    "end": 1.054
+    "start": 0.4,
+    "end": 0.72
   },
   {
     "word": "in",
-    "start": 1.084,
-    "end": 1.268
+    "start": 0.72,
+    "end": 0.96
   },
   {
     "word": "three",
-    "start": 1.298,
-    "end": 1.578
+    "start": 0.96,
+    "end": 0.98
   },
   {
     "word": "seconds.",
-    "start": 1.608,
-    "end": 1.952
+    "start": 0.98,
+    "end": 1.56
   },
   {
     "word": "Here",
-    "start": 2.352,
-    "end": 2.6
+    "start": 2.0,
+    "end": 2.16
   },
   {
     "word": "is",
-    "start": 2.63,
-    "end": 2.814
+    "start": 2.16,
+    "end": 2.32
   },
   {
     "word": "how",
-    "start": 2.844,
-    "end": 3.06
+    "start": 2.32,
+    "end": 2.46
   },
   {
     "word": "to",
-    "start": 3.09,
-    "end": 3.274
+    "start": 2.46,
+    "end": 2.56
   },
   {
     "word": "save",
-    "start": 3.304,
-    "end": 3.552
+    "start": 2.56,
+    "end": 2.8
   },
   {
     "word": "it.",
-    "start": 3.582,
-    "end": 3.766
+    "start": 2.8,
+    "end": 2.96
   },
   {
     "word": "Rule",
-    "start": 4.166,
-    "end": 4.414
+    "start": 3.16,
+    "end": 3.62
   },
   {
     "word": "one:",
-    "start": 4.444,
-    "end": 4.66
+    "start": 3.82,
+    "end": 3.92
   },
   {
     "word": "hook",
-    "start": 4.86,
-    "end": 5.108
+    "start": 3.92,
+    "end": 4.02
   },
   {
     "word": "first.",
-    "start": 5.138,
-    "end": 5.418
+    "start": 4.02,
+    "end": 4.32
   },
   {
     "word": "Rule",
-    "start": 5.818,
-    "end": 6.066
+    "start": 4.64,
+    "end": 5.14
   },
   {
     "word": "two:",
-    "start": 6.096,
-    "end": 6.312
+    "start": 5.14,
+    "end": 5.23
   },
   {
     "word": "change",
-    "start": 6.512,
-    "end": 6.824
+    "start": 5.48,
+    "end": 5.7
   },
   {
     "word": "the",
-    "start": 6.854,
-    "end": 7.07
+    "start": 5.7,
+    "end": 5.92
   },
   {
     "word": "scene",
-    "start": 7.1,
-    "end": 7.38
+    "start": 5.92,
+    "end": 6.18
   },
   {
     "word": "every",
-    "start": 7.41,
-    "end": 7.69
+    "start": 6.18,
+    "end": 6.68
   },
   {
     "word": "five",
-    "start": 7.72,
-    "end": 7.968
+    "start": 6.68,
+    "end": 6.807
   },
   {
     "word": "seconds.",
-    "start": 7.998,
-    "end": 8.342
+    "start": 6.807,
+    "end": 7.06
   },
   {
     "word": "Rule",
-    "start": 8.742,
-    "end": 8.99
+    "start": 7.46,
+    "end": 7.64
   },
   {
     "word": "three:",
-    "start": 9.02,
-    "end": 9.3
+    "start": 7.64,
+    "end": 7.66
   },
   {
     "word": "move",
-    "start": 9.5,
-    "end": 9.748
+    "start": 7.66,
+    "end": 8.62
   },
   {
     "word": "something",
-    "start": 9.778,
-    "end": 10.186
+    "start": 8.62,
+    "end": 8.9
   },
   {
     "word": "every",
-    "start": 10.216,
-    "end": 10.496
+    "start": 8.9,
+    "end": 9.46
   },
   {
     "word": "two",
-    "start": 10.526,
-    "end": 10.742
+    "start": 9.46,
+    "end": 9.553
   },
   {
     "word": "seconds.",
-    "start": 10.772,
-    "end": 11.116
+    "start": 9.553,
+    "end": 9.8
   },
   {
     "word": "Want",
-    "start": 11.516,
-    "end": 11.764
+    "start": 10.16,
+    "end": 10.32
   },
   {
     "word": "the",
-    "start": 11.794,
-    "end": 12.01
+    "start": 10.32,
+    "end": 10.46
   },
   {
     "word": "kit?",
-    "start": 12.04,
-    "end": 12.256
+    "start": 10.46,
+    "end": 10.66
   },
   {
     "word": "Comment",
-    "start": 12.656,
-    "end": 13
+    "start": 10.96,
+    "end": 11.22
   },
   {
     "word": "KIT",
-    "start": 13.03,
-    "end": 13.246
+    "start": 11.22,
+    "end": 11.86
   },
   {
     "word": "and",
-    "start": 13.276,
-    "end": 13.492
+    "start": 11.86,
+    "end": 12.3
   },
   {
     "word": "I",
-    "start": 13.522,
-    "end": 13.674
+    "start": 12.3,
+    "end": 12.336
   },
   {
     "word": "will",
-    "start": 13.704,
-    "end": 13.952
+    "start": 12.336,
+    "end": 12.48
   },
   {
     "word": "send",
-    "start": 13.982,
-    "end": 14.23
+    "start": 12.48,
+    "end": 12.74
   },
   {
     "word": "it.",
-    "start": 14.26,
-    "end": 14.444
+    "start": 12.74,
+    "end": 12.92
   }
 ]
