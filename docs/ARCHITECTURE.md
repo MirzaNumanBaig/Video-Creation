@@ -66,4 +66,5 @@ Then in Claude Code: `/master <task>`.
 - Empty repos (Modus-Carry, Sell-Birds-Runner, SEO-Audit-Tool) and ai-agents: purpose?
 - pin-creator: auto-post allowed, or approval each time?
 - Reel kit: Remotion's licence is paid for larger companies; confirm your size.
-- The two third-party skill packs are unmodified upstream; copy their `skills/*` into `~/.claude/skills/` (or install as plugins) to use them as slash commands.
+- Skills: the 13 `ig-*` and 11 `yt-*` skills are installed project-local in `.claude/skills/` (copies of the pinned submodules; refresh with `scripts/install-skills.sh` after moving a pin). Each reads a voice profile you still need to create: `~/.claude/instagram/voice.md` and `~/.claude/youtube/voice.md` (templates in each repo's `templates/voice.md`).
+- The reel kit's own skill (`reels`) loads when Claude runs inside `vendor/reel-studio-kit`; it needs `npm install` there first.

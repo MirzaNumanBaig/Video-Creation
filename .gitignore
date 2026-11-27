@@ -4,3 +4,4 @@ node_modules/
 __pycache__/
 .venv/
 out/
+.claude/skills/**/__pycache__/
