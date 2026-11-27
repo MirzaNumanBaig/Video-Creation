@@ -1,0 +1,834 @@
+{
+  "$comment": "Master registry. Single source of truth for which repos exist, what they do, and who owns them. tools/master.py reads this file. Keep facts here verified; mark anything unverified as [CONFIRM].",
+  "owner": "MirzaNumanBaig",
+  "repos": {
+    "seo-desk": {
+      "path": "repos/seo-desk",
+      "url": "https://github.com/MirzaNumanBaig/seo-desk",
+      "visibility": "private",
+      "status": "active",
+      "agent": "seo-liaison",
+      "summary": "SEO agent team (Lead + 13 specialists) that audits client sites, assigns fixes, builds work branches and gates merges. Currently one project: xplorekit.",
+      "stack": [
+        "python",
+        "markdown agents",
+        "claude code slash commands"
+      ],
+      "entrypoints": [
+        "CLAUDE.md",
+        ".claude/agents/*.md",
+        ".claude/commands/*.md",
+        "tools/audit.py",
+        "tools/gate.py",
+        "projects/<slug>/"
+      ],
+      "commands": {
+        "audit": "python3 tools/audit.py <project>",
+        "gate": "python3 tools/gate.py <project>",
+        "dashboard": "python3 dashboard/sync.py && python3 dashboard/build_site.py"
+      },
+      "keywords": [
+        "seo",
+        "audit",
+        "technical seo",
+        "on-page",
+        "backlinks",
+        "outreach",
+        "keywords",
+        "competitor",
+        "ranking",
+        "search console",
+        "schema",
+        "sitemap",
+        "client"
+      ],
+      "produces": [
+        "audits",
+        "work branches on client sites",
+        "reports",
+        "dashboard data"
+      ],
+      "consumes": [
+        "client site repos (e.g. xplorekit)"
+      ],
+      "rules": [
+        "Nothing goes live without owner approval unless project Owner rules say Auto-merge and tools/gate.py PASSes",
+        "One project at a time; never copy data between projects",
+        "Update the project's profile.md/log.md/tasks.md at session end"
+      ]
+    },
+    "content-creation-agency": {
+      "path": "repos/content-creation-agency",
+      "url": "https://github.com/MirzaNumanBaig/Content-Creation-Agency",
+      "visibility": "private",
+      "status": "active",
+      "agent": "seo-engine-liaison",
+      "summary": "SEO Engine: TypeScript pnpm monorepo (core pipeline, Next.js dashboard, CLI) running a multi-agent research -> brief -> write -> fact-check -> SEO -> publish pipeline for client blogs.",
+      "stack": [
+        "typescript",
+        "pnpm",
+        "drizzle",
+        "next.js",
+        "zod"
+      ],
+      "entrypoints": [
+        "CLAUDE.md",
+        "docs/blueprint.md",
+        "docs/agency-architecture-v1.md",
+        "packages/core",
+        "packages/dashboard",
+        "packages/cli"
+      ],
+      "commands": {
+        "install": "pnpm install",
+        "test": "pnpm test",
+        "dummy-run": "pnpm cli run --dummy"
+      },
+      "keywords": [
+        "blog",
+        "article",
+        "brief",
+        "content pipeline",
+        "fact check",
+        "adsense",
+        "wordpress publish",
+        "drizzle",
+        "seo engine",
+        "client blog",
+        "schema json-ld"
+      ],
+      "produces": [
+        "articles (status pending by default)",
+        "artifacts audit trail",
+        "published_posts log"
+      ],
+      "consumes": [
+        "SERP data (free path or DataForSEO)",
+        "client rules (rulesJson)"
+      ],
+      "rules": [
+        "Never scrape a search results page",
+        "Publisher default status is pending",
+        "All LLM calls via tools/llm.ts",
+        "JSON-LD is template generated, never LLM generated",
+        "Statistics need a verifiable source"
+      ]
+    },
+    "xplorekit": {
+      "path": "repos/xplorekit",
+      "url": "https://github.com/MirzaNumanBaig/xplorekit",
+      "visibility": "private",
+      "status": "active",
+      "agent": "directory-liaison",
+      "summary": "xplorekit.online: static site (Cloudflare Workers static assets, public/) with an extension directory, AI skills, prompts and Make Money with AI hubs.",
+      "stack": [
+        "static html",
+        "cloudflare workers",
+        "wrangler"
+      ],
+      "entrypoints": [
+        "CLAUDE.md (build standard)",
+        "public/",
+        "wrangler.jsonc",
+        "scripts/build-feed.py"
+      ],
+      "commands": {
+        "dev": "npm run dev",
+        "deploy": "npm run deploy"
+      },
+      "keywords": [
+        "xplorekit",
+        "chrome extension",
+        "extension directory",
+        "prompts library",
+        "skills library",
+        "make money with ai",
+        "cloudflare",
+        "static site"
+      ],
+      "produces": [
+        "the live website"
+      ],
+      "consumes": [
+        "data feed PRs from xplorekit-dashboard",
+        "work branches from seo-desk"
+      ],
+      "rules": [
+        "Every page follows CLAUDE.md build standard (GTM, canonical, breadcrumbs, site shell)",
+        "No page may invent data; cards come from public/data/<section>/"
+      ]
+    },
+    "xplorekit-dashboard": {
+      "path": "repos/xplorekit-dashboard",
+      "url": "https://github.com/MirzaNumanBaig/xplorekit-dashboard",
+      "visibility": "public",
+      "status": "active",
+      "agent": "directory-liaison",
+      "summary": "Research pipeline (runs every 3h in GitHub Actions) that discovers, verifies and rewrites content for four xplorekit sections and syncs verified JSON to the site repo as an auto-merging PR.",
+      "stack": [
+        "python",
+        "github actions",
+        "claude code action"
+      ],
+      "entrypoints": [
+        "AGENTS.md (source of truth)",
+        "GUIDE.md",
+        "xplorekit/",
+        "data/",
+        "docs/index.html"
+      ],
+      "commands": {
+        "test": "python -m unittest discover -s tests",
+        "dry-run": "python -m xplorekit.run --section money --dry-run --site-dir ../xplorekit"
+      },
+      "keywords": [
+        "discover",
+        "verify",
+        "money ideas",
+        "prompt hunter",
+        "extension scout",
+        "skills scout",
+        "editor verifier",
+        "fact check",
+        "feed"
+      ],
+      "produces": [
+        "data/<section>/*.json",
+        "PRs against xplorekit"
+      ],
+      "consumes": [
+        "HN, GitHub, RSS, official docs"
+      ],
+      "rules": [
+        "Reject income figures the source does not state",
+        "robots.txt checked before every fetch",
+        "Never store star/user/rating counts"
+      ]
+    },
+    "researcher-agents": {
+      "path": "repos/researcher-agents",
+      "url": "https://github.com/MirzaNumanBaig/Researcher-agents",
+      "visibility": "public",
+      "status": "active",
+      "agent": "news-content-liaison",
+      "summary": "Modus Carry (Australia) celebrity news pipeline: collects leads every 3h, writes original articles with Claude, generates FLUX featured images, publishes approved drafts to WordPress. Includes a leads dashboard and an MCP server.",
+      "stack": [
+        "python",
+        "github actions",
+        "flux image pipeline",
+        "wordpress rest",
+        "mcp"
+      ],
+      "entrypoints": [
+        "AGENTS.md (source of truth)",
+        "CLAUDE.md",
+        "config.json",
+        "agents/",
+        ".claude/skills/",
+        "mcp/server.py"
+      ],
+      "commands": {
+        "collect": "python agents/collect_news.py",
+        "dashboard": "python agents/build_dashboard.py",
+        "test": "python -m unittest discover -s tests"
+      },
+      "keywords": [
+        "celebrity",
+        "news",
+        "leads",
+        "story",
+        "article draft",
+        "featured image",
+        "flux",
+        "wordpress",
+        "modus carry",
+        "australia",
+        "dashboard",
+        "brief"
+      ],
+      "produces": [
+        "data/leads.json",
+        "briefs/",
+        "articles/*.md",
+        "WordPress posts"
+      ],
+      "consumes": [
+        "Google News, local RSS feeds, Wikidata/Commons"
+      ],
+      "rules": [
+        "Only a human approves an article",
+        "Write original text, never copy",
+        "Never commit secrets (tokens belong in Actions secrets)",
+        "Stand-in cast for images, never a real name or look-alike"
+      ]
+    },
+    "clips-studio": {
+      "path": "repos/clips-studio",
+      "url": "https://github.com/MirzaNumanBaig/clips-studio",
+      "visibility": "public",
+      "status": "active",
+      "agent": "video-liaison",
+      "summary": "Clips Kitty: local-first AI clipping engine (modified copy of ColinGPT9/clips-studio with a monthly AI spend limit). Long video in, captioned vertical clips out. FastAPI on 127.0.0.1:8765, Electron/React UI, MCP server, Python SDK, agent skill.",
+      "stack": [
+        "python",
+        "fastapi",
+        "electron",
+        "react",
+        "ffmpeg",
+        "docker"
+      ],
+      "entrypoints": [
+        "ARCHITECTURE.md",
+        "MODIFICATIONS.md",
+        "main.py",
+        "server/",
+        "sdk/python",
+        "skills/clips-kitty",
+        "docs/API.md"
+      ],
+      "commands": {
+        "test": "pytest tests",
+        "docker": "docker compose up"
+      },
+      "keywords": [
+        "video",
+        "clip",
+        "reel",
+        "short",
+        "tiktok",
+        "vertical",
+        "caption",
+        "subtitle",
+        "stream",
+        "gaming",
+        "sports",
+        "highlight",
+        "render"
+      ],
+      "produces": [
+        "captioned 9:16 clips",
+        "long-form edits"
+      ],
+      "consumes": [
+        "long videos, watched channels, API calls from other agents"
+      ],
+      "rules": [
+        "Build on the documented API (docs/API.md), not the database or data folder",
+        "Be upfront if videos/clips are sent anywhere",
+        "Upstream is ColinGPT9/clips-studio: keep MODIFICATIONS.md accurate"
+      ]
+    },
+    "pin-creator": {
+      "path": "repos/pin-creator",
+      "url": "https://github.com/MirzaNumanBaig/pin-creator",
+      "visibility": "public",
+      "status": "active",
+      "agent": "pinterest-liaison",
+      "summary": "Pinterest auto poster: product URL in, scraped details, AI-written copy, composed pin image, posted via Pinterest API. Express UI plus CLI with batch CSV.",
+      "stack": [
+        "node",
+        "express",
+        "sharp",
+        "openai",
+        "cheerio"
+      ],
+      "entrypoints": [
+        "server.js",
+        "cli.js",
+        "src/scrapers",
+        "src/ai",
+        "src/image",
+        "src/pinterest",
+        "config.json"
+      ],
+      "commands": {
+        "start": "npm start",
+        "cli": "npm run cli"
+      },
+      "keywords": [
+        "pinterest",
+        "pin",
+        "product url",
+        "affiliate",
+        "batch csv",
+        "scraper"
+      ],
+      "produces": [
+        "Pinterest pins"
+      ],
+      "consumes": [
+        "product URLs"
+      ],
+      "rules": [
+        "Keep API keys in .env, never in the repo",
+        "Post only with owner approval [CONFIRM: owner rule not yet stated]"
+      ]
+    },
+    "ai-agents": {
+      "path": "repos/ai-agents",
+      "url": "https://github.com/MirzaNumanBaig/AI-Agents",
+      "visibility": "public",
+      "status": "placeholder",
+      "agent": null,
+      "summary": "README only. Candidate home for shared agent definitions once the master's agents stabilise [CONFIRM with owner].",
+      "stack": [],
+      "entrypoints": [
+        "README.md"
+      ],
+      "commands": {},
+      "keywords": [],
+      "produces": [],
+      "consumes": [],
+      "rules": []
+    },
+    "modus-carry": {
+      "path": null,
+      "url": "https://github.com/MirzaNumanBaig/Modus-Carry",
+      "visibility": "public",
+      "status": "empty",
+      "agent": null,
+      "summary": "Empty repository (no commits). Name matches the WordPress site served by researcher-agents and the Modus_Carry (WPVibe) MCP connector [CONFIRM intended purpose].",
+      "keywords": [
+        "modus carry"
+      ]
+    },
+    "sell-birds-runner": {
+      "path": null,
+      "url": "https://github.com/MirzaNumanBaig/Sell-Birds-Runner",
+      "visibility": "public",
+      "status": "empty",
+      "agent": null,
+      "summary": "Empty repository (no commits). Purpose unknown [CONFIRM].",
+      "keywords": []
+    },
+    "seo-audit-tool": {
+      "path": null,
+      "url": "https://github.com/MirzaNumanBaig/SEO-Audit-Tool",
+      "visibility": "public",
+      "status": "empty",
+      "agent": null,
+      "summary": "Empty repository (no commits). Overlaps seo-desk/tools/audit.py; likely superseded [CONFIRM].",
+      "keywords": []
+    },
+    "reel-studio-kit": {
+      "path": "vendor/reel-studio-kit",
+      "url": null,
+      "visibility": "vendored",
+      "status": "vendored",
+      "agent": "video-liaison",
+      "summary": "Remotion reel studio (MIT, from @techstackbro): one line in, script (approval gate), voice, Whisper-synced captions, scenes, render, frame self-check, caption+hashtags. Faceless/animated reels with no footage. Copied in as plain files (no upstream git). Includes 14 caption styles / 23 presets vendored from remotion-captioneer (MIT) under src/captioneer.",
+      "stack": [
+        "node",
+        "remotion",
+        "typescript",
+        "python (whisper captions)",
+        "ffmpeg"
+      ],
+      "entrypoints": [
+        "CLAUDE.md",
+        ".claude/skills/reels/SKILL.md",
+        "src/brand.ts",
+        "src/reels/<id>/Reel.tsx",
+        "tools/"
+      ],
+      "commands": {
+        "install": "npm install",
+        "demo": "npm run demo",
+        "new": "npm run new -- <id>",
+        "voice": "npm run voice -- <id> --provider piper   (free default) | openai | elevenlabs | own",
+        "sync": "npm run sync -- <id> --lang en",
+        "check": "npm run check -- <id>",
+        "render": "npm run render -- <id>",
+        "setup-voice": "npm run setup:voice   (free local Piper voice, once)",
+        "setup-captions": "npm run setup:captions   (free local Whisper, once)",
+        "caption-gallery": "npx remotion still CaptionGallery-Styles out/styles.png --frame=36  (also CaptionGallery-Presets)"
+      },
+      "keywords": [
+        "reel",
+        "faceless",
+        "explainer",
+        "remotion",
+        "script",
+        "voiceover",
+        "captions",
+        "avatar",
+        "pixel",
+        "animated",
+        "no footage"
+      ],
+      "produces": [
+        "out/<id>.mp4",
+        "projects/<id>/post.md"
+      ],
+      "consumes": [
+        "topic line",
+        "free: Piper voice + Whisper captions (local, no key)",
+        "optional paid: OPENAI_API_KEY or ELEVENLABS_API_KEY (env/.env only)"
+      ],
+      "rules": [
+        "Script approval gate: never skip",
+        "Facts need sources the agent actually opened",
+        "Run npm run check and LOOK at the contact sheet before showing a render",
+        "Keys only from env/.env, never in files",
+        "Remotion licence: paid for larger companies [CONFIRM size]",
+        "Owner decision 2026-11-27: no paid APIs. Use --provider piper (or own recording); never OpenAI/ElevenLabs unless the owner reverses this",
+        "Composition IDs are case-sensitive (npm run check -- Demo)",
+        "Captions: use <StyledCaptions preset|style> (captionPreset/captionStyle props). Do not npm-install remotion-captioneer: it pins remotion 4.0.438 + React 18 and conflicts with the kit"
+      ]
+    },
+    "instagram-agent-skill": {
+      "path": "repos/instagram-agent-skill",
+      "url": "https://github.com/Jakeschincariol/instagram-agent-skill",
+      "visibility": "public",
+      "status": "active",
+      "agent": "social-liaison",
+      "summary": "13 Instagram skills (MIT): reels off 26 hook formulas, captions, carousels, stories, profile score, weekly plan, comments, replies, DMs, repurposing, audit, viral research, humanizer. 5 stdlib Python tools. Writes only; never posts.",
+      "stack": [
+        "claude skills",
+        "python stdlib"
+      ],
+      "entrypoints": [
+        "skills/ig-*/SKILL.md",
+        "templates/voice.md",
+        "skills/ig-human/humanize.py",
+        "skills/ig-reel/hookscore.py"
+      ],
+      "commands": {
+        "hook": "python3 skills/ig-reel/hookscore.py --hook \"line\"",
+        "beats": "python3 skills/ig-reel/beats.py script.txt --target 30",
+        "caption": "python3 skills/ig-caption/caption.py caption.txt",
+        "humanize": "python3 skills/ig-human/humanize.py draft.txt --report"
+      },
+      "keywords": [
+        "instagram",
+        "hook",
+        "caption",
+        "carousel",
+        "story",
+        "dm",
+        "comment",
+        "hashtag",
+        "humanize",
+        "engagement",
+        "swipe file"
+      ],
+      "produces": [
+        "scripts",
+        "captions",
+        "plans (text)"
+      ],
+      "consumes": [
+        "~/.claude/instagram/voice.md"
+      ],
+      "rules": [
+        "Nothing is posted without the owner",
+        "ig-viral is reading at human speed, never a crawler, never logs in as the user",
+        "Copy formulas, never videos"
+      ]
+    },
+    "youtube-agent-skill": {
+      "path": "repos/youtube-agent-skill",
+      "url": "https://github.com/Jakeschincariol/youtube-agent-skill",
+      "visibility": "public",
+      "status": "active",
+      "agent": "social-liaison",
+      "summary": "11 YouTube skills (MIT): script off 21 hooks, title+thumbnail linter, edit decision list, comments, plan, viral research, retention analysis, Shorts extraction, SEO, chapters, audit. 6 stdlib Python tools. Writes only; never uploads.",
+      "stack": [
+        "claude skills",
+        "python stdlib"
+      ],
+      "entrypoints": [
+        "skills/yt-*/SKILL.md",
+        "templates/voice.md"
+      ],
+      "commands": {
+        "hook": "python3 skills/yt-script/hookscore.py --hook \"line\"",
+        "edl": "python3 skills/yt-edit/deadair.py transcript.srt",
+        "chapters": "python3 skills/yt-chapters/chapters.py transcript.srt",
+        "retention": "python3 skills/yt-retention/retention.py retention.csv"
+      },
+      "keywords": [
+        "youtube",
+        "title",
+        "thumbnail",
+        "retention",
+        "chapters",
+        "shorts",
+        "description",
+        "tags",
+        "long form"
+      ],
+      "produces": [
+        "scripts",
+        "titles",
+        "chapters",
+        "edit decision lists"
+      ],
+      "consumes": [
+        "~/.claude/youtube/voice.md",
+        "transcripts (.srt)"
+      ],
+      "rules": [
+        "Nothing is uploaded without the owner",
+        "hookscore is a heuristic, not a predictor",
+        "yt-viral reads public listings only"
+      ]
+    },
+    "awesome-claude-video-skills": {
+      "path": null,
+      "url": "https://github.com/zhuyansen/awesome-claude-video-skills",
+      "visibility": "public",
+      "status": "reference",
+      "agent": null,
+      "summary": "Third-party curated list of 564 video-skill repos with its own end-to-end test (16 skills, all passed 4 checks). Catalogue only; ratings are the maintainer's. Not cloned. Notable: explainroo, onetake, remotion-dev/skills, stickman-video-director, claude-faceless-shorts-creator. Installed from it on 2026-11-27: explainroo, paper-reel, remotion-skills.",
+      "keywords": [
+        "video skills catalogue",
+        "find a skill"
+      ]
+    },
+    "explainroo": {
+      "path": "repos/explainroo",
+      "url": "https://github.com/vincentsch/explainroo",
+      "visibility": "public",
+      "status": "active",
+      "agent": "video-liaison",
+      "summary": "Free open-source explainer-video studio for coding agents (MIT, v0.6.2): you write script.md + scenes.js, it renders an MP4 with a local Kokoro voice, word timing and camera moves. Linux supported. Optional paid outside services exist (AI clips, presenters, Blotato posting): do not use.",
+      "stack": [
+        "node",
+        "ffmpeg",
+        "kokoro (local tts)",
+        "canvas"
+      ],
+      "entrypoints": [
+        "skills/explainroo/SKILL.md",
+        "AGENTS.md",
+        "bin/explainroo.js"
+      ],
+      "commands": {
+        "docs": "node bin/explainroo.js docs",
+        "doctor": "node bin/explainroo.js doctor"
+      },
+      "keywords": [
+        "explainer",
+        "how-to video",
+        "walkthrough",
+        "explainroo",
+        "narrated video",
+        "screen recording",
+        "landscape video"
+      ],
+      "produces": [
+        "explainer MP4 with voice-over"
+      ],
+      "consumes": [
+        "topic",
+        "script.md",
+        "scenes.js"
+      ],
+      "rules": [
+        "No paid services or keys (owner decision 2026-11-27): never enable its outside AI-clip, presenter or posting integrations",
+        "Posting is the owner's action",
+        "Skill says: run via npx --yes explainroo, or node bin/explainroo.js in a source checkout"
+      ]
+    },
+    "paper-reel": {
+      "path": "repos/paper-reel",
+      "url": "https://github.com/haiderfarooq3/paper-reel",
+      "visibility": "public",
+      "status": "active",
+      "agent": "video-liaison",
+      "summary": "Faceless 9:16 cut-paper explainer reels drawn in code (MIT): Kokoro voice, whisper.cpp word timing, canvas + Playwright + ffmpeg, no API keys. macOS-oriented (brew, macOS system fonts): [CONFIRM] works on Linux.",
+      "stack": [
+        "node",
+        "playwright",
+        "ffmpeg",
+        "kokoro-onnx",
+        "whisper.cpp"
+      ],
+      "entrypoints": [
+        "SKILL.md",
+        "bin/reel",
+        "templates/starter",
+        "examples/khan-skill"
+      ],
+      "commands": {
+        "doctor": "bin/reel doctor",
+        "new": "bin/reel new <dir>",
+        "voice": "bin/reel voice <dir>",
+        "check": "bin/reel check <dir>",
+        "export": "bin/reel export <dir> out.mp4"
+      },
+      "keywords": [
+        "paper reel",
+        "cut paper",
+        "faceless reel",
+        "mascot reel",
+        "explainer reel",
+        "skill spotlight"
+      ],
+      "produces": [
+        "1080x1920 mp4 reels"
+      ],
+      "consumes": [
+        "topic + CTA keyword"
+      ],
+      "rules": [
+        "Script approval before drawing",
+        "Every factual claim checked against a primary source",
+        "Reels 18-25 s"
+      ]
+    },
+    "remotion-skills": {
+      "path": "repos/remotion-skills",
+      "url": "https://github.com/remotion-dev/skills",
+      "visibility": "public",
+      "status": "active",
+      "agent": "video-liaison",
+      "summary": "Remotion's official agent skills (best practices, captions, render, docs, licence...). Guidance for working in Remotion projects such as vendor/reel-studio-kit. Remotion has its own licence: paid for larger companies.",
+      "stack": [
+        "markdown skills"
+      ],
+      "entrypoints": [
+        "skills/remotion-best-practices/SKILL.md"
+      ],
+      "commands": {},
+      "keywords": [
+        "remotion",
+        "remotion best practices",
+        "remotion captions",
+        "remotion render"
+      ],
+      "produces": [
+        "guidance only"
+      ],
+      "consumes": [],
+      "rules": [
+        "Use when editing vendor/reel-studio-kit"
+      ]
+    },
+    "subtle": {
+      "path": "repos/subtle",
+      "url": "https://github.com/0xpratzyy/subtle",
+      "visibility": "public",
+      "status": "active",
+      "agent": "video-liaison",
+      "summary": "Animated captions for any video, local only (MIT): 39 styles (35 caption + 4 music/lyric), local Whisper, no API key. Optional Sarvam engine needs the owner's own key and is never enabled. Behind-the-speaker styles need macOS Apple Vision.",
+      "stack": [
+        "python",
+        "faster-whisper",
+        "ffmpeg",
+        "remotion"
+      ],
+      "entrypoints": [
+        "SKILL.md",
+        "scripts/subtle.py",
+        "styles/"
+      ],
+      "commands": {
+        "doctor": "python3 scripts/doctor.py",
+        "styles": "python3 scripts/subtle.py --list-styles",
+        "render": "python3 scripts/subtle.py in.mp4 --style karaoke --out out.mp4"
+      },
+      "keywords": [
+        "captions",
+        "subtitles",
+        "caption style",
+        "karaoke",
+        "lyrics",
+        "srt",
+        "word by word"
+      ]
+    }
+  },
+  "flows": [
+    {
+      "id": "directory-feed",
+      "from": "xplorekit-dashboard",
+      "to": "xplorekit",
+      "via": "auto-merging PR of verified data/<section>/*.json, rendered by scripts/build-feed.py",
+      "status": "live"
+    },
+    {
+      "id": "seo-work",
+      "from": "seo-desk",
+      "to": "xplorekit",
+      "via": "work branch + tools/gate.py, then PR",
+      "status": "live"
+    },
+    {
+      "id": "news-to-wordpress",
+      "from": "researcher-agents",
+      "to": "wordpress:modus-carry",
+      "via": "approved articles/*.md published by publish_wordpress.py",
+      "status": "live"
+    },
+    {
+      "id": "seo-engine-to-blog",
+      "from": "content-creation-agency",
+      "to": "wordpress:client-blogs",
+      "via": "Herald publisher, default status pending",
+      "status": "live"
+    },
+    {
+      "id": "articles-to-video",
+      "from": "researcher-agents",
+      "to": "clips-studio",
+      "via": "approved article -> script/voiceover -> clip or reel",
+      "status": "proposed"
+    },
+    {
+      "id": "directory-to-pins",
+      "from": "xplorekit",
+      "to": "pin-creator",
+      "via": "directory page URL -> pin",
+      "status": "proposed"
+    },
+    {
+      "id": "seo-feedback",
+      "from": "seo-desk",
+      "to": "content-creation-agency",
+      "via": "strategy.md keyword clusters -> briefs",
+      "status": "proposed"
+    },
+    {
+      "id": "script-to-reel",
+      "from": "instagram-agent-skill",
+      "to": "reel-studio-kit",
+      "via": "ig-reel script/hook -> projects/<id>/voice.txt (after owner approval)",
+      "status": "proposed"
+    },
+    {
+      "id": "reel-to-post",
+      "from": "reel-studio-kit",
+      "to": "instagram-agent-skill",
+      "via": "out/<id>.mp4 -> ig-caption / ig-human -> owner posts",
+      "status": "proposed"
+    },
+    {
+      "id": "long-to-shorts",
+      "from": "youtube-agent-skill",
+      "to": "clips-studio",
+      "via": "yt-shorts picks moments -> clips-studio renders clips",
+      "status": "proposed"
+    },
+    {
+      "id": "humanize-writers",
+      "from": "instagram-agent-skill",
+      "to": "researcher-agents",
+      "via": "ig-human humanize.py as a pre-publish pass on drafts",
+      "status": "proposed"
+    }
+  ],
+  "agents": {
+    "seo-liaison": "Operates seo-desk.",
+    "seo-engine-liaison": "Operates content-creation-agency.",
+    "directory-liaison": "Operates xplorekit and xplorekit-dashboard.",
+    "news-content-liaison": "Operates researcher-agents.",
+    "video-liaison": "Operates clips-studio, vendor/reel-studio-kit and the video MCP tools.",
+    "pinterest-liaison": "Operates pin-creator.",
+    "handoff-broker": "Owns the handoff queue between agents.",
+    "release-gate": "Checks every outward-facing change before it ships.",
+    "repo-scout": "Read-only repository explorer.",
+    "social-liaison": "Operates instagram-agent-skill and youtube-agent-skill."
+  }
+}

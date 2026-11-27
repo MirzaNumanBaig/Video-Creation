@@ -1,0 +1,114 @@
+/**
+ * Highlighter Style
+ * Active word has a highlighter/marker background behind it
+ */
+
+import React from "react";
+import { AbsoluteFill, useCurrentFrame, useVideoConfig } from "remotion";
+import { captionBoxMaxWidth, type CaptionStyleLayoutProps } from "./style-props";
+import { emphasisVisual } from "./emphasis";
+import type { CaptionData } from "../types";
+import { getActiveSegment, getActiveWordIndex } from "../utils";
+
+interface HighlighterProps extends CaptionStyleLayoutProps {
+  readonly captions: CaptionData;
+  readonly fontFamily?: string;
+  readonly fontSize?: number;
+  readonly fontColor?: string;
+  readonly highlightColor?: string;
+  readonly highlightOpacity?: number;
+  readonly position?: "top" | "center" | "bottom";
+  readonly emphasisStyle?: "scale" | "color" | "glow";
+  readonly emphasisColor?: string;
+}
+
+export const Highlighter: React.FC<HighlighterProps> = ({
+  captions,
+  fontFamily = "Inter, sans-serif",
+  fontSize = 56,
+  fontColor = "rgba(255,255,255,0.4)",
+  highlightColor = "#FFEB3B",
+  highlightOpacity = 0.7,
+  position = "bottom",
+  emphasisStyle,
+  emphasisColor,
+  maxWidth,
+}) => {
+  const frame = useCurrentFrame();
+  const { fps } = useVideoConfig();
+  const currentTimeMs = (frame / fps) * 1000;
+
+  const segment = getActiveSegment(captions, currentTimeMs);
+  if (!segment) return null;
+
+  const activeWordIndex = getActiveWordIndex(segment, currentTimeMs);
+
+  const positionStyle: React.CSSProperties = {
+    top: position === "top" ? "10%" : position === "center" ? "50%" : undefined,
+    bottom: position === "bottom" ? "10%" : undefined,
+    transform: position === "center" ? "translateY(-50%)" : undefined,
+  };
+
+  return (
+    <AbsoluteFill
+      style={{
+        justifyContent: "center",
+        alignItems: "center",
+        ...positionStyle,
+      }}
+    >
+      <div
+        style={{
+          display: "flex",
+          flexWrap: "wrap",
+          justifyContent: "center",
+          alignItems: "baseline",
+          gap: "8px 12px",
+          maxWidth: captionBoxMaxWidth(maxWidth),
+          padding: "16px 24px",
+        }}
+      >
+        {segment.words.map((word, i) => {
+          const isActive = i === activeWordIndex;
+          const isPast = i < activeWordIndex;
+          const emph = emphasisVisual(word, { emphasisStyle, emphasisColor, highlightColor });
+          const emphFontSize = emph.fontBoost
+            ? Math.round(fontSize * emph.fontBoost)
+            : fontSize;
+
+          return (
+            <span
+              key={`${word.startMs}-${i}`}
+              style={{
+                fontFamily,
+                fontSize: emphFontSize,
+                fontWeight: 700,
+                color: emph.color
+                  ? emph.color
+                  : isActive
+                    ? "#000"
+                    : isPast
+                      ? "white"
+                      : fontColor,
+                display: "inline-block",
+                backgroundColor: isActive
+                  ? `${highlightColor}${Math.round(highlightOpacity * 255).toString(16).padStart(2, "0")}`
+                  : "transparent",
+                padding: isActive ? "2px 8px" : "0",
+                borderRadius: "4px",
+                transform: isActive ? "rotate(-1deg)" : "none",
+                textShadow: emph.textShadow
+                  ? emph.textShadow
+                  : isActive
+                    ? "none"
+                    : "0 2px 8px rgba(0,0,0,0.5)",
+              }}
+            >
+              {word.word}
+            </span>
+          );
+        })}
+      </div>
+    </AbsoluteFill>
+  );
+};

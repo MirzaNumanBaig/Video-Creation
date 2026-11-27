@@ -1,0 +1,115 @@
+/**
+ * Blur Style
+ * Words come into focus from blur as they're spoken
+ */
+
+import React from "react";
+import { AbsoluteFill, useCurrentFrame, useVideoConfig } from "remotion";
+import { captionBoxMaxWidth, type CaptionStyleLayoutProps } from "./style-props";
+import { emphasisVisual } from "./emphasis";
+import type { CaptionData } from "../types";
+import { getActiveSegment, getActiveWordIndex } from "../utils";
+
+interface BlurProps extends CaptionStyleLayoutProps {
+  readonly captions: CaptionData;
+  readonly fontFamily?: string;
+  readonly fontSize?: number;
+  readonly fontColor?: string;
+  readonly focusColor?: string;
+  readonly blurAmount?: number;
+  readonly position?: "top" | "center" | "bottom";
+  readonly emphasisStyle?: "scale" | "color" | "glow";
+  readonly emphasisColor?: string;
+}
+
+export const Blur: React.FC<BlurProps> = ({
+  captions,
+  fontFamily = "Inter, sans-serif",
+  fontSize = 56,
+  fontColor = "rgba(255,255,255,0.4)",
+  focusColor = "#FFFFFF",
+  blurAmount = 8,
+  position = "bottom",
+  emphasisStyle,
+  emphasisColor,
+  maxWidth,
+}) => {
+  const frame = useCurrentFrame();
+  const { fps } = useVideoConfig();
+  const currentTimeMs = (frame / fps) * 1000;
+
+  const segment = getActiveSegment(captions, currentTimeMs);
+  if (!segment) return null;
+
+  const activeWordIndex = getActiveWordIndex(segment, currentTimeMs);
+
+  const positionStyle: React.CSSProperties = {
+    top: position === "top" ? "10%" : position === "center" ? "50%" : undefined,
+    bottom: position === "bottom" ? "10%" : undefined,
+    transform: position === "center" ? "translateY(-50%)" : undefined,
+  };
+
+  return (
+    <AbsoluteFill
+      style={{
+        justifyContent: "center",
+        alignItems: "center",
+        ...positionStyle,
+      }}
+    >
+      <div
+        style={{
+          display: "flex",
+          flexWrap: "wrap",
+          justifyContent: "center",
+          alignItems: "baseline",
+          gap: "8px 12px",
+          maxWidth: captionBoxMaxWidth(maxWidth),
+          padding: "16px 24px",
+        }}
+      >
+        {segment.words.map((word, i) => {
+          const isActive = i === activeWordIndex;
+          const isPast = i < activeWordIndex;
+          const emph = emphasisVisual(word, { emphasisStyle, emphasisColor, highlightColor: focusColor });
+          const isEmph = Boolean(word.emphasis && emphasisStyle);
+
+          // Emphasized words stay readable instead of resting blurred.
+          const blur = isActive || isEmph ? 0 : isPast ? 0 : blurAmount;
+          const opacity = isActive ? 1 : isPast || isEmph ? 0.9 : 0.3;
+          const emphFontSize = emph.fontBoost
+            ? Math.round(fontSize * emph.fontBoost)
+            : fontSize;
+
+          return (
+            <span
+              key={`${word.startMs}-${i}`}
+              style={{
+                fontFamily,
+                fontSize: emphFontSize,
+                fontWeight: 700,
+                color: emph.color
+                  ? emph.color
+                  : isActive
+                    ? focusColor
+                    : isPast
+                      ? "white"
+                      : fontColor,
+                display: "inline-block",
+                filter: `blur(${blur}px)`,
+                opacity,
+                textShadow: emph.textShadow
+                  ? emph.textShadow
+                  : isActive
+                    ? "0 0 20px rgba(255,255,255,0.3)"
+                    : "0 2px 8px rgba(0,0,0,0.5)",
+              }}
+            >
+              {word.word}
+            </span>
+          );
+        })}
+      </div>
+    </AbsoluteFill>
+  );
+};
