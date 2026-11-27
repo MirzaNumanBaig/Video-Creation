@@ -15,5 +15,6 @@ link(){ rm -rf ".claude/skills/$1"; ln -s "$2" ".claude/skills/$1"; }
 link paper-reel ../../repos/paper-reel
 link explainroo ../../repos/explainroo/skills/explainroo
 link remotion-best-practices ../../repos/remotion-skills/skills/remotion-best-practices
+link subtle ../../repos/subtle
 find .claude/skills -name __pycache__ -prune -exec rm -rf {} +
 ls .claude/skills | tr '\n' ' '; echo

@@ -50,3 +50,6 @@
 	path = repos/remotion-skills
 	url = https://github.com/remotion-dev/skills.git
 	shallow = true
+[submodule "repos/subtle"]
+	path = repos/subtle
+	url = https://github.com/0xpratzyy/subtle.git

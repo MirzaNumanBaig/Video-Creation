@@ -705,6 +705,39 @@
       "rules": [
         "Use when editing vendor/reel-studio-kit"
       ]
+    },
+    "subtle": {
+      "path": "repos/subtle",
+      "url": "https://github.com/0xpratzyy/subtle",
+      "visibility": "public",
+      "status": "active",
+      "agent": "video-liaison",
+      "summary": "Animated captions for any video, local only (MIT): 39 styles (35 caption + 4 music/lyric), local Whisper, no API key. Optional Sarvam engine needs the owner's own key and is never enabled. Behind-the-speaker styles need macOS Apple Vision.",
+      "stack": [
+        "python",
+        "faster-whisper",
+        "ffmpeg",
+        "remotion"
+      ],
+      "entrypoints": [
+        "SKILL.md",
+        "scripts/subtle.py",
+        "styles/"
+      ],
+      "commands": {
+        "doctor": "python3 scripts/doctor.py",
+        "styles": "python3 scripts/subtle.py --list-styles",
+        "render": "python3 scripts/subtle.py in.mp4 --style karaoke --out out.mp4"
+      },
+      "keywords": [
+        "captions",
+        "subtitles",
+        "caption style",
+        "karaoke",
+        "lyrics",
+        "srt",
+        "word by word"
+      ]
     }
   },
   "flows": [
