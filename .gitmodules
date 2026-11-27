@@ -1,0 +1,40 @@
+[submodule "repos/ai-agents"]
+	path = repos/ai-agents
+	url = https://github.com/MirzaNumanBaig/AI-Agents.git
+	shallow = true
+[submodule "repos/xplorekit"]
+	path = repos/xplorekit
+	url = https://github.com/MirzaNumanBaig/xplorekit.git
+	shallow = true
+[submodule "repos/pin-creator"]
+	path = repos/pin-creator
+	url = https://github.com/MirzaNumanBaig/pin-creator.git
+	shallow = true
+[submodule "repos/seo-desk"]
+	path = repos/seo-desk
+	url = https://github.com/MirzaNumanBaig/seo-desk.git
+	shallow = true
+[submodule "repos/xplorekit-dashboard"]
+	path = repos/xplorekit-dashboard
+	url = https://github.com/MirzaNumanBaig/xplorekit-dashboard.git
+	shallow = true
+[submodule "repos/researcher-agents"]
+	path = repos/researcher-agents
+	url = https://github.com/MirzaNumanBaig/Researcher-agents.git
+	shallow = true
+[submodule "repos/clips-studio"]
+	path = repos/clips-studio
+	url = https://github.com/MirzaNumanBaig/clips-studio.git
+	shallow = true
+[submodule "repos/content-creation-agency"]
+	path = repos/content-creation-agency
+	url = https://github.com/MirzaNumanBaig/Content-Creation-Agency.git
+	shallow = true
+[submodule "repos/instagram-agent-skill"]
+	path = repos/instagram-agent-skill
+	url = https://github.com/Jakeschincariol/instagram-agent-skill.git
+	shallow = true
+[submodule "repos/youtube-agent-skill"]
+	path = repos/youtube-agent-skill
+	url = https://github.com/Jakeschincariol/youtube-agent-skill.git
+	shallow = true
